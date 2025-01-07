@@ -28,7 +28,7 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          index.docker.io/atomic365/aivle_mini7_6_spring:latest
-          index.docker.io/atomic365/aivle_mini7_6_spring:${{ github.sha }}
+          index.docker.io/${{ secrets.DOCKERHUB_USERNAME}}/aivle_bigproject_ai:latest
+          index.docker.io/${{ secrets.DOCKERHUB_USERNAME}}/aivle_bigproject_ai:${{ github.sha }}
         file: ./Dockerfile
 
