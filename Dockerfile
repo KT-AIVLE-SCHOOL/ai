@@ -1,12 +1,14 @@
-FROM python:3.12-alpine3.21
+FROM python:3.11-slim
 
 WORKDIR /app
 
 COPY ./requirements.txt /app/
 
+RUN apt-get update && apt-get install -y build-essential
+
 RUN pip install --upgrade pip
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./server_app /app
 
