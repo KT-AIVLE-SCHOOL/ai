@@ -16,6 +16,7 @@ load_dotenv("chat_api_key.env")
 cohere_api_key = os.getenv("cohere_api_key")
 co = cohere.Client(cohere_api_key)
 
+
 # FAISS 기반 + Cohere Reranking 적용한 Retriever
 class FAISSRetrieverWithCohere(BaseRetriever):
     index: faiss.IndexIVFFlat = Field(...)
@@ -50,9 +51,11 @@ class FAISSRetrieverWithCohere(BaseRetriever):
     async def _aget_relevant_documents(self, query: str, k=5) -> List[Document]:
         return self._get_relevant_documents(query, k)
 
+
 # FAISS Index 불러오기 함수
 def load_faiss_index(index_path: str):
     return faiss.read_index(index_path)
+
 
 # FAISSRetrieverWithCohere 초기화 함수
 def initialize_retriever(index_path: str, chunks: List[str], upstage_api_key: str):

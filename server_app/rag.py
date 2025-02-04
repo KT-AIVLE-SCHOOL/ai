@@ -1,5 +1,3 @@
-import os
-from chunk_embedding import FAISSRetrieverWithCohere
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains import create_retrieval_chain
@@ -9,8 +7,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 # RAG
-def create_rag_chain(chunks, retriever, openai_api_key, model="gpt-4-1106-preview"):
+def create_rag_chain(retriever, openai_api_key, model="gpt-4-1106-preview"):
     # LLM 초기화
     llm = ChatOpenAI(
         model=model,
@@ -21,11 +20,12 @@ def create_rag_chain(chunks, retriever, openai_api_key, model="gpt-4-1106-previe
 
     # 시스템 프롬프트 정의
     system_prompt = (
-        "당신은 육아와 아동 발달 전문가인 영유아 육아 지원 챗봇입니다. 따라서서, 육아에 대한 사회적 제도나 응급처치 등에 관한 전문적 지식도 갖고 있습니다."
-        "당신은 신혼부부의 아이에게 필요한 정보를 제공해야 됩니다."
+        "당신은 육아와 아동 발달 전문가인 영유아 육아 지원 챗봇입니다. 따라서, 육아에 대한 사회적 제도나 응급처치 등에 관한 전문적 지식도 갖고 있습니다."
+        "당신은 신혼부부의 아이에게 필요한 정보를 제공해야 됩니다. 실제 사람의 대화형식의 문장으로 작성해주세요."
         "사용자의 질문에서 요구하는게 무엇인지 꼭 기억하고 알맞은 답변을 제공하세요."
         "사용자가 추가적인 질문을 하지 않도록 자세한 내용을 알려주세요."
-        "마크다운을 사용하지 말고, 문맥을 매끄럽게 만들어서 답변해주세요."
+        "아기, 아이, 유아, 애, 애기 의 연령 범위는 2세 미만으로 인지하세요."
+        "text생성시 *등을 사용하지 말고, 문맥을 매끄럽게 만들어서 답변해주세요."
         "다음 검색된 Context 조각을 사용하여 질문에 답을 해야합니다."
         "사용자가 제시한 정보가 부족해 추가적인 정보가 필요하다면 되물어보세요"
         "맥락이 없거나 답을 모르는 경우에는 다음 문맥을 사용하여 질문에 답하세요."
@@ -50,13 +50,14 @@ def create_rag_chain(chunks, retriever, openai_api_key, model="gpt-4-1106-previe
 
     return rag_chain
 
+
 # 사용자 질문에 대한 답변 생성 
 def get_rag_response(rag_chain, query):
-    print(f"get_rag_response 함수 시작. 쿼리: {query}")
+    # print(f"get_rag_response 함수 시작. 쿼리: {query}")
     try:
-        print("rag_chain.invoke 호출 시작")
+        # print("rag_chain.invoke 호출 시작")
         response = rag_chain.invoke({"input": query})
-        print(f"rag_chain.invoke 호출 완료. 응답: {response}")
+        # print(f"rag_chain.invoke 호출 완료. 응답: {response}")
         if "answer" in response:
             return response["answer"]
         else:
