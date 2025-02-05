@@ -7,4 +7,4 @@ openai
 python-dotenv
 cohere
 fastapi
-uvicorn
+uvicorn[standard]
